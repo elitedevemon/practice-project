@@ -28,6 +28,12 @@
 
   <div class="container py-5">
     <div class="card shadow-sm border-0">
+      @if (session()->has('success'))
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          {{ session('success') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
       <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h5 class="mb-0">প্রোডাক্ট তালিকা</h5>
         <a href="{{ route('home') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> নতুন যোগ
@@ -66,10 +72,18 @@
                       class="badge bg-success-subtle text-success border border-success-subtle">{{ $product->stock > 0 ? "available" : "unavaiable" }}</span>
                   </td>
                   <td class="text-end pe-4">
-                    <button class="btn btn-light btn-sm text-primary" title="view"><i class="bi bi-eye-fill"></i></button>
-                    <button class="btn btn-light btn-sm text-info" title="এডিট"><i
-                        class="bi bi-pencil-square"></i></button>
-                    <button class="btn btn-light btn-sm text-danger" title="ডিলিট"><i class="bi bi-trash"></i></button>
+                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-light btn-sm text-primary" title="view"><i
+                        class="bi bi-eye-fill"></i></a>
+                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-light btn-sm text-info" title="এডিট"><i
+                        class="bi bi-pencil-square"></i></a>
+                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" id="delete-form-{{ $product->id }}">
+                      @csrf
+                      @method('DELETE')
+
+                      <button type="button" class="btn btn-light btn-sm text-danger" title="ডিলিট" onclick="deleteItem({{ $product->id }})">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
                   </td>
                 </tr>
               @endforeach
@@ -93,6 +107,13 @@
 
   <!-- Bootstrap 5 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function deleteItem(id) {
+      if (confirm('আপনি কি নিশ্চিত যে এটি মুছে ফেলতে চান?')) {
+        document.getElementById('delete-form-' + id).submit();
+      }
+    }
+  </script>
 </body>
 
 </html>

@@ -46,7 +46,7 @@ class ProductController extends Controller
    */
   public function show(Product $product)
   {
-    //
+    return view('product-view', compact('product'));
   }
 
   /**
@@ -54,7 +54,7 @@ class ProductController extends Controller
    */
   public function edit(Product $product)
   {
-    //
+    return view('product-update', compact('product'));
   }
 
   /**
@@ -62,7 +62,15 @@ class ProductController extends Controller
    */
   public function update(Request $request, Product $product)
   {
-    //
+    $product->product_name = $request->product_name;
+    $product->category = $request->category;
+    $product->brand = $request->brand;
+    $product->price = $request->price;
+    $product->offer_price = $request->offer_price;
+    $product->stock = $request->stock;
+    $product->description = $request->description;
+    $product->save();
+    return redirect()->back()->with('success', 'প্রোডাক্ট সফলভাবে আপডেট করা হয়েছে!');
   }
 
   /**
@@ -70,6 +78,7 @@ class ProductController extends Controller
    */
   public function destroy(Product $product)
   {
-    //
+    $product->delete();
+    return redirect()->back()->with('success', 'প্রোডাক্ট সফলভাবে মুছে ফেলা হয়েছে!');
   }
 }
