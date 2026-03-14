@@ -29,7 +29,18 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
+    $image = $request->file('product_image');
+    if ($image) {
+      $imageName = time() . '_' . $image->getClientOriginalName();
+      $image->move(public_path('images'), $imageName);
+    } else {
+      $imageName = null; // No image uploaded
+    }
+
+    // return $imageName;
+
     $product = new Product();
+    $product->product_image = $imageName;
     $product->product_name = $request->product_name;
     $product->category = $request->category;
     $product->brand = $request->brand;
@@ -62,6 +73,21 @@ class ProductController extends Controller
    */
   public function update(Request $request, Product $product)
   {
+    $image = $request->file('product_image');
+    if ($image) {
+
+      if ($product->product_image) {
+        $path = public_path("images/{$product->product_image}");
+        if (file_exists($path)) {
+          unlink($path);
+        }
+      }
+
+      $imageName = time() . '_' . $image->getClientOriginalName();
+      $image->move(public_path('images'), $imageName);
+      $product->product_image = $imageName; // Update the image if a new one is uploaded
+    }
+
     $product->product_name = $request->product_name;
     $product->category = $request->category;
     $product->brand = $request->brand;
@@ -69,7 +95,7 @@ class ProductController extends Controller
     $product->offer_price = $request->offer_price;
     $product->stock = $request->stock;
     $product->description = $request->description;
-    $product->save();
+    $product->update();
     return redirect()->back()->with('success', 'প্রোডাক্ট সফলভাবে আপডেট করা হয়েছে!');
   }
 
@@ -78,6 +104,13 @@ class ProductController extends Controller
    */
   public function destroy(Product $product)
   {
+    if ($product->product_image) {
+      $path = public_path("images/{$product->product_image}");
+      if (file_exists($path)) {
+        unlink($path);
+      }
+    }
+
     $product->delete();
     return redirect()->back()->with('success', 'প্রোডাক্ট সফলভাবে মুছে ফেলা হয়েছে!');
   }

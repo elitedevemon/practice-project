@@ -13,6 +13,7 @@ return new class extends Migration {
     // product_name, category, brand, price, offer_price, stock, description
     Schema::create('products', function (Blueprint $table) {
       $table->id();
+      
       $table->string('product_name');
       $table->string('category');
       $table->string('brand')->nullable();

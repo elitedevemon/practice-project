@@ -27,8 +27,14 @@
               প্রোডাক্ট দেখুন</a>
           </div>
           <div class="card-body p-4">
-            <form action="{{ route('products.store') }}" method="POST">
+            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
               @csrf
+
+              <!-- Product Image -->
+              <div class="mb-3">
+                <label for="productImage" class="form-label">প্রোডাক্টের ছবি</label>
+                <input type="file" class="form-control" id="productImage" name="product_image" accept="image/*">
+              </div>
 
               <!-- Product Title -->
               <div class="mb-3">

@@ -27,9 +27,18 @@
               প্রোডাক্ট দেখুন</a>
           </div>
           <div class="card-body p-4">
-            <form action="{{ route('products.update', $product->id) }}" method="POST">
+            <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
               @csrf
               @method('PUT')
+
+              <!-- Product Image -->
+              <img src="{{ asset("images/{$product->product_image}") }}" alt="Product Image" class="mx-auto d-block mb-3"
+                style="max-width: 200px; border-radius: 8px;">
+              
+              <div class="mb-3">
+                <label for="productImage" class="form-label">প্রোডাক্টের ছবি</label>
+                <input type="file" class="form-control" id="productImage" name="product_image" accept="image/*">
+              </div>
 
               <!-- Product Title -->
               <div class="mb-3">

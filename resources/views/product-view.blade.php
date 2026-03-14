@@ -40,7 +40,7 @@
 
         <!-- প্রোডাক্ট ইমেজ সেকশন -->
         <div class="col-md-6">
-          <img src="https://www.djibstyle.com/wp-content/uploads/2019/01/dummy-product-2.png"
+          <img src="{{ asset("images/{$product->product_image}") }}"
             class="img-fluid product-image w-100" alt="প্রোডাক্ট ইমেজ">
         </div>
 
